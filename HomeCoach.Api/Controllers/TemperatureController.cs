@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace HomeCoach.Api.Controllers
 {
@@ -10,29 +9,32 @@ namespace HomeCoach.Api.Controllers
     using Alexa.NET.Request;
     using Alexa.NET.Request.Type;
     using Alexa.NET.Response;
+    using Microsoft.AspNetCore.Mvc;
 
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class TemperatureController : ControllerBase
     {
-        [HttpPost]
-        [Route("temperature")]
+        [HttpPost("temperature")]
         public IActionResult GetTemperature(SkillRequest skillRequest)
-        {          
+        {
             var requestType = skillRequest.GetRequestType();
 
-            SkillResponse response = null;
+            SkillResponse response = ResponseBuilder.Tell("Welcome to HomeCoach!");
 
             if (requestType == typeof(LaunchRequest))
             {
-                response = ResponseBuilder.Tell("Welcome to HomeCoach!");
+                response = ResponseBuilder.Tell("Welcome to HomeCoach!, voici une launch request !");
                 response.Response.ShouldEndSession = false;
             }
 
             return this.Ok(response);
         }
-        }
 
-       
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            return this.Ok("API is alive");
+        }
     }
 }
