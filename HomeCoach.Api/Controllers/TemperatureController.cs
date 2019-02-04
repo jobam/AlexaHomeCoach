@@ -19,15 +19,16 @@ namespace HomeCoach.Api.Controllers
         public IActionResult GetTemperature(SkillRequest skillRequest)
         {
             var requestType = skillRequest.GetRequestType();
+            var netAtmoAccessToken = skillRequest.Context.System.User.AccessToken;
 
-            SkillResponse response = ResponseBuilder.Tell("Welcome to HomeCoach!");
-
-            if (requestType == typeof(LaunchRequest))
+            if (String.IsNullOrEmpty(netAtmoAccessToken))
             {
-                response = ResponseBuilder.Tell("Welcome to HomeCoach!, voici une launch request !");
-                response.Response.ShouldEndSession = false;
+                return Ok(ResponseBuilder.TellWithLinkAccountCard("Veuillez vous identifier à netatmo afin d'utiliser cette skill"));
             }
 
+            SkillResponse response = ResponseBuilder.Tell($"Welcome to HomeCoach! requestType {requestType}");
+
+       
             return this.Ok(response);
         }
 
