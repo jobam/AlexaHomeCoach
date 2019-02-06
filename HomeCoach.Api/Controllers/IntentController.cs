@@ -21,11 +21,14 @@ namespace HomeCoach.Api.Controllers
     {
         private readonly INetatmoDataBusiness business;
 
+        private const string responseString =
+            "La température de {0} est de {1}°C, l'humidité est de {2}% et le bruit est de {3} décibels";
+
         public IntentController(INetatmoDataBusiness business)
         {
             this.business = business;
         }
-        
+
         [HttpPost("devices")]
         public async Task<IActionResult> GetDevicesData(SkillRequest skillRequest)
         {
@@ -42,8 +45,12 @@ namespace HomeCoach.Api.Controllers
             var device = devicesData.First();
 
             SkillResponse response =
-                ResponseBuilder.Tell(
-                    $"La température de {device.DeviceName} est de {device.Temperature}°C et l'humidité est de {device.HumidityPercent}%");
+                ResponseBuilder.Tell(String.Format(responseString,
+                    device.DeviceName,
+                    device.Temperature.ToString().Replace(".", ","),
+                    device.HumidityPercent,
+                    device.Noise)
+                );
 
 
             return this.Ok(response);
