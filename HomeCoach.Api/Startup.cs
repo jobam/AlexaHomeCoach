@@ -34,6 +34,7 @@ namespace HomeCoach.Api
         private void AddBusinessServices(IServiceCollection services)
         {
             services.AddTransient<INetatmoDataBusiness, NetatmoDataBusiness>();
+            services.AddScoped<IHomeCoachDataMapper, HomeCoachDataMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

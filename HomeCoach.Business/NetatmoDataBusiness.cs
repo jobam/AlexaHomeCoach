@@ -8,6 +8,13 @@ namespace HomeCoach.Business
 
     public class NetatmoDataBusiness : INetatmoDataBusiness
     {
+        private readonly IHomeCoachDataMapper mapper;
+
+        public NetatmoDataBusiness(IHomeCoachDataMapper mapper)
+        {
+            this.mapper = mapper;
+        }
+        
         public async Task<IEnumerable<HomeCoachData>> GetDevicesData(string oauth2Token)
         {
             IClient client = new Client(
@@ -15,8 +22,9 @@ namespace HomeCoach.Business
                 String.Empty, String.Empty);
             client.ProvideOAuth2Token(oauth2Token);
             var netAtmoResult = await client.Air.GetHomeCoachsData();
-            
-            return new List<HomeCoachData>();
+
+            var data = mapper.Map(netAtmoResult);
+            return data;
         }
     }
 }
