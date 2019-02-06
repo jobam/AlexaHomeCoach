@@ -11,15 +11,23 @@ namespace HomeCoach.Api.Controllers
     using Alexa.NET.Request;
     using Alexa.NET.Request.Type;
     using Alexa.NET.Response;
+    using Business;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api")]
     [ApiController]
-    public class TemperatureController : ControllerBase
+    public class IntentController : ControllerBase
     {
-        [HttpPost("temperature")]
-        public async Task<IActionResult> GetTemperature(SkillRequest skillRequest)
+        private readonly INetatmoDataBusiness business;
+
+        public IntentController(INetatmoDataBusiness business)
+        {
+            this.business = business;
+        }
+        
+        [HttpPost("devices")]
+        public async Task<IActionResult> GetDevicesData(SkillRequest skillRequest)
         {
             var requestType = skillRequest.GetRequestType();
             var netAtmoAccessToken = skillRequest.Context.System.User.AccessToken;
@@ -29,16 +37,13 @@ namespace HomeCoach.Api.Controllers
                 return Ok(ResponseBuilder.TellWithLinkAccountCard("Veuillez vous identifier à netatmo afin d'utiliser cette skill"));
             }
 
-            IClient client = new Client(
-                NodaTime.SystemClock.Instance, " https://api.netatmo.com/",
-                String.Empty, String.Empty);
-            client.ProvideOAuth2Token(netAtmoAccessToken);
-            var netAtmoResult = await client.Air.GetHomeCoachsData();
-            var device = netAtmoResult.Body.Devices.First();
+            var devicesData = await this.business.GetDevicesData(netAtmoAccessToken);
+
+            var device = devicesData.First();
 
             SkillResponse response =
                 ResponseBuilder.Tell(
-                    $"La température de {device.Name} est de {device.DashboardData.Temperature}°C et l'humidité est de {device.DashboardData.HumidityPercent}%");
+                    $"La température de {device.DeviceName} est de {device.Temperature}°C et l'humidité est de {device.HumidityPercent}%");
 
 
             return this.Ok(response);
