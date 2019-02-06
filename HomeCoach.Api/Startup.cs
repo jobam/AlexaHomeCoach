@@ -13,6 +13,8 @@ using Microsoft.Extensions.Options;
 
 namespace HomeCoach.Api
 {
+    using Business;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -25,7 +27,14 @@ namespace HomeCoach.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            this.AddBusinessServices(services);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        }
+
+        private void AddBusinessServices(IServiceCollection services)
+        {
+            services.AddTransient<INetatmoDataBusiness, NetatmoDataBusiness>();
+            services.AddScoped<IHomeCoachDataMapper, HomeCoachDataMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
