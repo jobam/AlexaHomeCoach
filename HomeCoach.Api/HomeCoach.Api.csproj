@@ -13,5 +13,9 @@
       <PackageReference Include="NodaTime.NetworkClock" Version="2.0.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\HomeCoach.Business\HomeCoach.Business.csproj" />
+    </ItemGroup>
+
 
 </Project>
