@@ -22,7 +22,7 @@ namespace HomeCoach.Api.Controllers
         private readonly INetatmoDataBusiness business;
 
         private const string responseString =
-            "La température de {0} est de {1}°C, l'humidité est de {2}% et le bruit est de {3} décibels";
+            "La température de {0} est de {1}°C, l'humidité est de {2}%, le niveau de CO2 est de {3} PPM et le bruit est de {4} décibels";
 
         public IntentController(INetatmoDataBusiness business)
         {
@@ -49,6 +49,7 @@ namespace HomeCoach.Api.Controllers
                     device.DeviceName,
                     device.Temperature.ToString().Replace(".", ","),
                     device.HumidityPercent,
+                    device.Co2,
                     device.Noise)
                 );
 

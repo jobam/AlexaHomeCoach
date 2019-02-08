@@ -15,7 +15,8 @@ namespace HomeCoach.Business
                 Temperature = source.DashboardData.Temperature,
                 DeviceName = source.Name,
                 HumidityPercent = source.DashboardData.HumidityPercent,
-                Noise = source.DashboardData.Noise
+                Noise = source.DashboardData.Noise,
+                Co2 = source.DashboardData.CO2
             };
 
             return dest;
