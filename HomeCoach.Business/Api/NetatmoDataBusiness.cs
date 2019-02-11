@@ -22,7 +22,7 @@ namespace HomeCoach.Business
                 String.Empty, String.Empty);
             client.ProvideOAuth2Token(oauth2Token);
             var netAtmoResult = await client.Air.GetHomeCoachsData();
-
+            
             var data = mapper.Map(netAtmoResult);
             return data;
         }

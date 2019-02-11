@@ -40,21 +40,27 @@ namespace HomeCoach.Api.Controllers
                 return Ok(ResponseBuilder.TellWithLinkAccountCard("Veuillez vous identifier à netatmo afin d'utiliser cette skill"));
             }
 
-            var devicesData = await this.business.GetDevicesData(netAtmoAccessToken);
+            try
+            {
+                var devicesData = await this.business.GetDevicesData(netAtmoAccessToken);
+                var device = devicesData.First();
 
-            var device = devicesData.First();
-
-            SkillResponse response =
-                ResponseBuilder.Tell(String.Format(responseString,
-                    device.DeviceName,
-                    device.Temperature.ToString().Replace(".", ","),
-                    device.HumidityPercent,
-                    device.Co2,
-                    device.Noise)
-                );
+                SkillResponse response =
+                    ResponseBuilder.Tell(String.Format(responseString,
+                        device.DeviceName,
+                        device.Temperature.ToString().Replace(".", ","),
+                        device.HumidityPercent,
+                        device.Co2,
+                        device.Noise)
+                    );
 
 
-            return this.Ok(response);
+                return this.Ok(response);
+            }
+            catch (NoDataException)
+            {
+                return Ok(ResponseBuilder.Tell("Impossible de récupérer les données depuis Netatmo"));
+            }
         }
 
         [HttpGet("test")]
