@@ -10,6 +10,11 @@ namespace HomeCoach.Business
     {
         public HomeCoachData Map(Devices source)
         {
+            if (source.DashboardData == null)
+            {
+                throw new NoDataException();
+            }
+            
             var dest = new HomeCoachData()
             {
                 Temperature = source.DashboardData.Temperature,
