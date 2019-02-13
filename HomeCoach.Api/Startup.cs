@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 namespace HomeCoach.Api
 {
     using Business;
+    using Business.Response;
 
     public class Startup
     {
@@ -35,6 +36,7 @@ namespace HomeCoach.Api
         {
             services.AddTransient<INetatmoDataBusiness, NetatmoDataBusiness>();
             services.AddScoped<IHomeCoachDataMapper, HomeCoachDataMapper>();
+            services.AddScoped<IResponseBusiness, ResponseBusiness>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
