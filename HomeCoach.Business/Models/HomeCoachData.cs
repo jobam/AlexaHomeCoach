@@ -12,5 +12,7 @@ namespace HomeCoach.Business.Models
         
         public double Noise { get; set; }
         
+        public double Pressure { get; set; }
+        
     }
 }

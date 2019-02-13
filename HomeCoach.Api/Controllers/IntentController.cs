@@ -22,7 +22,7 @@ namespace HomeCoach.Api.Controllers
         private readonly INetatmoDataBusiness business;
 
         private const string responseString =
-            "La température de {0} est de {1}°C, l'humidité est de {2}%, le niveau de CO2 est de {3} PPM et le bruit est de {4} décibels";
+            "La température de {0} est de {1}°C, l'humidité est de {2}%, la pression est de {3} hectoPascal, le niveau de CO2 est de {4} PPM et le bruit est de {5} décibels";
 
         public IntentController(INetatmoDataBusiness business)
         {
@@ -32,7 +32,8 @@ namespace HomeCoach.Api.Controllers
         [HttpPost("devices")]
         public async Task<IActionResult> GetDevicesData(SkillRequest skillRequest)
         {
-            var requestType = skillRequest.GetRequestType();
+            var itentRequest = skillRequest.Request as IntentRequest;
+            
             var netAtmoAccessToken = skillRequest.Context.System.User.AccessToken;
 
             if (String.IsNullOrEmpty(netAtmoAccessToken))
@@ -50,6 +51,7 @@ namespace HomeCoach.Api.Controllers
                         device.DeviceName,
                         device.Temperature.ToString().Replace(".", ","),
                         device.HumidityPercent,
+                        device.Pressure,
                         device.Co2,
                         device.Noise)
                     );
