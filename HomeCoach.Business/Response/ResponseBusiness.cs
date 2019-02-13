@@ -18,7 +18,7 @@ namespace HomeCoach.Business.Response
                 case "noise":
                     return $"Le bruit au niveau de {data.DeviceName} est de {data.Noise}%";             
                 case "ppm":
-                    return $"L'air au niveau de {data.DeviceName} est chargé de {data.Co2} particules par mètre cube%";
+                    return $"L'air au niveau de {data.DeviceName} est chargé de {data.Co2} particules par mètre cube";
                 default:
                     return
                         $"La température de {data.DeviceName} est de {data.Temperature}°C, l'humidité est de {data.HumidityPercent}%, la pression est de {data.Pressure} hectoPascal, le niveau de CO2 est de {data.Pressure} particule par mètre cube et le bruit est de {data.Noise} décibels";
