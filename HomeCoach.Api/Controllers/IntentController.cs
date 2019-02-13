@@ -12,6 +12,7 @@ namespace HomeCoach.Api.Controllers
     using Alexa.NET.Request.Type;
     using Alexa.NET.Response;
     using Business;
+    using Business.Response;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
 
@@ -20,20 +21,22 @@ namespace HomeCoach.Api.Controllers
     public class IntentController : ControllerBase
     {
         private readonly INetatmoDataBusiness business;
+        private readonly IResponseBusiness responseBusiness;
 
         private const string responseString =
             "La température de {0} est de {1}°C, l'humidité est de {2}%, la pression est de {3} hectoPascal, le niveau de CO2 est de {4} PPM et le bruit est de {5} décibels";
 
-        public IntentController(INetatmoDataBusiness business)
+        public IntentController(INetatmoDataBusiness business, IResponseBusiness responseBusiness)
         {
             this.business = business;
+            this.responseBusiness = responseBusiness;
         }
 
         [HttpPost("devices")]
         public async Task<IActionResult> GetDevicesData(SkillRequest skillRequest)
         {
             var itentRequest = skillRequest.Request as IntentRequest;
-            
+
             var netAtmoAccessToken = skillRequest.Context.System.User.AccessToken;
 
             if (String.IsNullOrEmpty(netAtmoAccessToken))
@@ -46,15 +49,7 @@ namespace HomeCoach.Api.Controllers
                 var devicesData = await this.business.GetDevicesData(netAtmoAccessToken);
                 var device = devicesData.First();
 
-                SkillResponse response =
-                    ResponseBuilder.Tell(String.Format(responseString,
-                        device.DeviceName,
-                        device.Temperature.ToString().Replace(".", ","),
-                        device.HumidityPercent,
-                        device.Pressure,
-                        device.Co2,
-                        device.Noise)
-                    );
+                SkillResponse response = ResponseBuilder.Tell(responseBusiness.BuildResponse(device, itentRequest.Intent.Name));
 
 
                 return this.Ok(response);
