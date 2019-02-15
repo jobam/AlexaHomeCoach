@@ -23,9 +23,6 @@ namespace HomeCoach.Api.Controllers
         private readonly INetatmoDataBusiness business;
         private readonly IResponseBusiness responseBusiness;
 
-        private const string responseString =
-            "La température de {0} est de {1}°C, l'humidité est de {2}%, la pression est de {3} hectoPascal, le niveau de CO2 est de {4} PPM et le bruit est de {5} décibels";
-
         public IntentController(INetatmoDataBusiness business, IResponseBusiness responseBusiness)
         {
             this.business = business;
