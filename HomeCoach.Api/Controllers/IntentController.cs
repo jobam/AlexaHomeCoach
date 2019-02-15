@@ -56,11 +56,5 @@ namespace HomeCoach.Api.Controllers
                 return Ok(ResponseBuilder.Tell("Impossible de récupérer les données depuis Netatmo"));
             }
         }
-
-        [HttpGet("test")]
-        public IActionResult Test()
-        {
-            return this.Ok("API is alive");
-        }
     }
 }
