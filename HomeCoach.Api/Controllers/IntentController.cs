@@ -12,6 +12,7 @@ namespace HomeCoach.Api.Controllers
     using Alexa.NET.Request.Type;
     using Alexa.NET.Response;
     using Business;
+    using Business.Models;
     using Business.Response;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,7 @@ namespace HomeCoach.Api.Controllers
         [HttpPost("devices")]
         public async Task<IActionResult> GetDevicesData(SkillRequest skillRequest)
         {
-            var itentRequest = skillRequest.Request as IntentRequest;
+            var intentRequest = skillRequest.Request as IntentRequest;
 
             var netAtmoAccessToken = skillRequest.Context.System.User.AccessToken;
 
@@ -44,9 +45,22 @@ namespace HomeCoach.Api.Controllers
             try
             {
                 var devicesData = await this.business.GetDevicesData(netAtmoAccessToken);
-                var device = devicesData.First();
-
-                SkillResponse response = ResponseBuilder.Tell(responseBusiness.BuildResponse(device, itentRequest.Intent.Name));
+                HomeCoachData requestedDeviceData;
+                
+                if (intentRequest.Intent.Slots.ContainsKey("device"))
+                {
+                    requestedDeviceData = devicesData.FirstOrDefault(x => x.DeviceName.ToLower() == intentRequest.Intent.Slots["device"].Value);
+                    if (requestedDeviceData == null)
+                    {
+                        return Ok(ResponseBuilder.Tell($"Nous n'avons pas trouvé d'appareil {intentRequest.Intent.Slots["device"].Value}"));
+                    }
+                }
+                else
+                {
+                    requestedDeviceData = devicesData.First();
+                }
+      
+                SkillResponse response = ResponseBuilder.Tell(responseBusiness.BuildResponse(requestedDeviceData, intentRequest.Intent.Name));
 
 
                 return this.Ok(response);
