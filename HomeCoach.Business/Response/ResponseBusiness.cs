@@ -21,7 +21,7 @@ namespace HomeCoach.Business.Response
                     return $"L'air au niveau de {data.DeviceName} est chargé de {data.Co2} particules par mètre cube";
                 default:
                     return
-                        $"La température de {data.DeviceName} est de {data.Temperature}°C, l'humidité est de {data.HumidityPercent}%, la pression est de {data.Pressure} hectoPascal, le niveau de CO2 est de {data.Pressure} particule par mètre cube et le bruit est de {data.Noise} décibels";
+                        $"Au niveau de {data.DeviceName}, la température est de {data.Temperature}°C, l'humidité est de {data.HumidityPercent}%, la pression est de {data.Pressure} hectoPascal, le niveau de CO2 est de {data.Pressure} particules par mètre cube et le bruit est de {data.Noise} décibels";
             }
         }
     }
