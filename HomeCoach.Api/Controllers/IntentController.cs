@@ -48,7 +48,7 @@ namespace HomeCoach.Api.Controllers
             {
                 var devicesData = await this.business.GetDevicesData(netAtmoAccessToken);
                 var requestedDeviceData = this.intentParsingBusiness.GetDeviceData(devicesData, intentRequest.Intent.Slots);
-      
+
                 SkillResponse response = ResponseBuilder.Tell(responseBusiness.BuildResponse(requestedDeviceData, intentRequest.Intent.Name));
 
 
@@ -57,6 +57,10 @@ namespace HomeCoach.Api.Controllers
             catch (NoDataException)
             {
                 return Ok(ResponseBuilder.Tell("Impossible de récupérer les données depuis Netatmo"));
+            }
+            catch (DeviceNotFoundException ex)
+            {
+                return Ok(ResponseBuilder.Tell($"L'appareil {ex.DeviceName} n'a pas été trouvé"));
             }
         }
     }
