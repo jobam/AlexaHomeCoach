@@ -47,7 +47,7 @@ namespace HomeCoach.Api.Controllers
             try
             {
                 var devicesData = await this.business.GetDevicesData(netAtmoAccessToken);
-                var requestedDeviceData = this.intentParsingBusiness.GetDeviceData(devicesData, intentRequest.Intent.Slots);
+                var requestedDeviceData = this.intentParsingBusiness.GetDeviceData(devicesData, intentRequest.Intent?.Slots);
 
                 SkillResponse response = ResponseBuilder.Tell(responseBusiness.BuildResponse(requestedDeviceData, intentRequest.Intent.Name));
 

@@ -11,7 +11,7 @@ namespace HomeCoach.Business
     {
         public HomeCoachData GetDeviceData(IEnumerable<HomeCoachData> source, Dictionary<string, Slot> intentSlots)
         {
-            if (intentSlots.ContainsKey("device"))
+            if (intentSlots != null && intentSlots.ContainsKey("device"))
             {
                 var deviceName = intentSlots["device"].Value.ToLower();
 
