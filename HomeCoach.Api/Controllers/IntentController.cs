@@ -23,11 +23,13 @@ namespace HomeCoach.Api.Controllers
     {
         private readonly INetatmoDataBusiness business;
         private readonly IResponseBusiness responseBusiness;
+        private readonly IIntentParsingBusiness intentParsingBusiness;
 
-        public IntentController(INetatmoDataBusiness business, IResponseBusiness responseBusiness)
+        public IntentController(INetatmoDataBusiness business, IResponseBusiness responseBusiness, IIntentParsingBusiness intentParsingBusiness)
         {
             this.business = business;
             this.responseBusiness = responseBusiness;
+            this.intentParsingBusiness = intentParsingBusiness;
         }
 
         [HttpPost("devices")]
@@ -45,20 +47,7 @@ namespace HomeCoach.Api.Controllers
             try
             {
                 var devicesData = await this.business.GetDevicesData(netAtmoAccessToken);
-                HomeCoachData requestedDeviceData;
-                
-                if (intentRequest.Intent.Slots.ContainsKey("device"))
-                {
-                    requestedDeviceData = devicesData.FirstOrDefault(x => x.DeviceName.ToLower() == intentRequest.Intent.Slots["device"].Value);
-                    if (requestedDeviceData == null)
-                    {
-                        return Ok(ResponseBuilder.Tell($"Nous n'avons pas trouvé d'appareil {intentRequest.Intent.Slots["device"].Value}"));
-                    }
-                }
-                else
-                {
-                    requestedDeviceData = devicesData.First();
-                }
+                var requestedDeviceData = this.intentParsingBusiness.GetDeviceData(devicesData, intentRequest.Intent.Slots);
       
                 SkillResponse response = ResponseBuilder.Tell(responseBusiness.BuildResponse(requestedDeviceData, intentRequest.Intent.Name));
 

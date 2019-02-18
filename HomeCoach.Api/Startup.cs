@@ -36,6 +36,7 @@ namespace HomeCoach.Api
         {
             services.AddTransient<INetatmoDataBusiness, NetatmoDataBusiness>();
             services.AddScoped<IHomeCoachDataMapper, HomeCoachDataMapper>();
+            services.AddScoped<IIntentParsingBusiness, IntentParsingBusiness>();
             services.AddScoped<IResponseBusiness, ResponseBusiness>();
         }
 
