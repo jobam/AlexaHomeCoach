@@ -9,14 +9,14 @@ namespace HomeCoach.Business.Response
             switch (intent)
             {
                 case "temperature":
-                    return $"La température de {data.DeviceName} est de {data.Temperature}°C";
+                    return $"La température de {data.DeviceName} est de {data.Temperature.ToString().Replace(".", ",")}°C";
 
                 case "humidity":
-                    return $"L'humidité de {data.DeviceName} est de {data.HumidityPercent}%";                
+                    return $"L'humidité de {data.DeviceName} est de {data.HumidityPercent}%";
                 case "pressure":
-                    return $"La pression au niveau de {data.DeviceName} est de {data.Pressure} hecto pascals";     
+                    return $"La pression au niveau de {data.DeviceName} est de {data.Pressure} hecto pascals";
                 case "noise":
-                    return $"Le bruit au niveau de {data.DeviceName} est de {data.Noise}%";             
+                    return $"Le bruit au niveau de {data.DeviceName} est de {data.Noise}%";
                 case "ppm":
                     return $"L'air au niveau de {data.DeviceName} est chargé de {data.Co2} particules par mètre cube";
                 default:

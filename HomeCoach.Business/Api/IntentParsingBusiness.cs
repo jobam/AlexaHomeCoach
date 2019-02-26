@@ -11,14 +11,14 @@ namespace HomeCoach.Business
     {
         public HomeCoachData GetDeviceData(IEnumerable<HomeCoachData> source, Dictionary<string, Slot> intentSlots)
         {
-            if (intentSlots.ContainsKey("device"))
+            if (intentSlots != null && intentSlots.ContainsKey("device"))
             {
                 var deviceName = intentSlots["device"].Value.ToLower();
 
                 var requestedDeviceData = source.FirstOrDefault(x => x.DeviceName.ToLower() == deviceName);
                 if (requestedDeviceData == null)
                 {
-                    throw new DeviceNotFoundException();
+                    throw new DeviceNotFoundException(deviceName);
                 }
 
                 return requestedDeviceData;
@@ -26,10 +26,5 @@ namespace HomeCoach.Business
 
             return source.First();
         }
-    }
-
-    public interface IIntentParsingBusiness
-    {
-        HomeCoachData GetDeviceData(IEnumerable<HomeCoachData> source, Dictionary<string, Slot> intentSlots);
     }
 }
