@@ -15,13 +15,16 @@ namespace HomeCoach.Business
             {
                 var deviceName = intentSlots["device"].Value?.ToLower();
 
-                var requestedDeviceData = source.FirstOrDefault(x => x.DeviceName.ToLower() == deviceName);
-                if (requestedDeviceData == null)
+                if (deviceName != null)
                 {
-                    throw new DeviceNotFoundException(deviceName);
-                }
+                    var requestedDeviceData = source.FirstOrDefault(x => x.DeviceName.ToLower() == deviceName);
+                    if (requestedDeviceData == null)
+                    {
+                        throw new DeviceNotFoundException(deviceName);
+                    }
 
-                return requestedDeviceData;
+                    return requestedDeviceData;
+                }
             }
 
             return source.First();
