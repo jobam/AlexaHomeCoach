@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeCoach.Api", "HomeCoach.Api\HomeCoach.Api.csproj", "{F69D1FDC-02CE-4870-B9FE-EB64F9546B2D}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2050
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeCoach.Api", "HomeCoach.Api\HomeCoach.Api.csproj", "{F69D1FDC-02CE-4870-B9FE-EB64F9546B2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeCoach.Business", "HomeCoach.Business\HomeCoach.Business.csproj", "{955971F7-C639-4B74-9CCB-781DC633B20D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeCoach.Business", "HomeCoach.Business\HomeCoach.Business.csproj", "{955971F7-C639-4B74-9CCB-781DC633B20D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeCoach.Tests", "HomeCoach.Tests\HomeCoach.Tests.csproj", "{6A71534F-6D92-499F-85A4-64777CF4A022}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,15 @@ Global
 		{955971F7-C639-4B74-9CCB-781DC633B20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{955971F7-C639-4B74-9CCB-781DC633B20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{955971F7-C639-4B74-9CCB-781DC633B20D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A71534F-6D92-499F-85A4-64777CF4A022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A71534F-6D92-499F-85A4-64777CF4A022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A71534F-6D92-499F-85A4-64777CF4A022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A71534F-6D92-499F-85A4-64777CF4A022}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F99F994-774C-40B6-AFA5-E93DAAABBCCC}
 	EndGlobalSection
 EndGlobal

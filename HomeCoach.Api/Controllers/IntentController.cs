@@ -12,6 +12,8 @@ namespace HomeCoach.Api.Controllers
     using Alexa.NET.Request.Type;
     using Alexa.NET.Response;
     using Business;
+    using Business.Models;
+    using Business.Response;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Mvc;
 
@@ -20,20 +22,22 @@ namespace HomeCoach.Api.Controllers
     public class IntentController : ControllerBase
     {
         private readonly INetatmoDataBusiness business;
+        private readonly IResponseBusiness responseBusiness;
+        private readonly IIntentParsingBusiness intentParsingBusiness;
 
-        private const string responseString =
-            "La température de {0} est de {1}°C, l'humidité est de {2}%, le niveau de CO2 est de {3} PPM et le bruit est de {4} décibels";
-
-        public IntentController(INetatmoDataBusiness business)
+        public IntentController(INetatmoDataBusiness business, IResponseBusiness responseBusiness, IIntentParsingBusiness intentParsingBusiness)
         {
             this.business = business;
+            this.responseBusiness = responseBusiness;
+            this.intentParsingBusiness = intentParsingBusiness;
         }
 
         [HttpPost("devices")]
         public async Task<IActionResult> GetDevicesData(SkillRequest skillRequest)
         {
-            var requestType = skillRequest.GetRequestType();
-            var netAtmoAccessToken = skillRequest.Context.System.User.AccessToken;
+            var intentRequest = skillRequest.Request as IntentRequest;
+
+            var netAtmoAccessToken = skillRequest?.Context?.System?.User?.AccessToken;
 
             if (String.IsNullOrEmpty(netAtmoAccessToken))
             {
@@ -43,16 +47,9 @@ namespace HomeCoach.Api.Controllers
             try
             {
                 var devicesData = await this.business.GetDevicesData(netAtmoAccessToken);
-                var device = devicesData.First();
+                var requestedDeviceData = this.intentParsingBusiness.GetDeviceData(devicesData, intentRequest.Intent?.Slots);
 
-                SkillResponse response =
-                    ResponseBuilder.Tell(String.Format(responseString,
-                        device.DeviceName,
-                        device.Temperature.ToString().Replace(".", ","),
-                        device.HumidityPercent,
-                        device.Co2,
-                        device.Noise)
-                    );
+                SkillResponse response = ResponseBuilder.Tell(responseBusiness.BuildResponse(requestedDeviceData, intentRequest.Intent.Name));
 
 
                 return this.Ok(response);
@@ -61,12 +58,10 @@ namespace HomeCoach.Api.Controllers
             {
                 return Ok(ResponseBuilder.Tell("Impossible de récupérer les données depuis Netatmo"));
             }
-        }
-
-        [HttpGet("test")]
-        public IActionResult Test()
-        {
-            return this.Ok("API is alive");
+            catch (DeviceNotFoundException ex)
+            {
+                return Ok(ResponseBuilder.Tell($"L'appareil {ex.DeviceName} n'a pas été trouvé"));
+            }
         }
     }
 }
