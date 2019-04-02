@@ -13,7 +13,7 @@ namespace HomeCoach.Business
         {
             if (intentSlots != null && intentSlots.ContainsKey("device"))
             {
-                var deviceName = intentSlots["device"].Value.ToLower();
+                var deviceName = intentSlots["device"].Value?.ToLower();
 
                 var requestedDeviceData = source.FirstOrDefault(x => x.DeviceName.ToLower() == deviceName);
                 if (requestedDeviceData == null)
