@@ -37,7 +37,7 @@ namespace HomeCoach.Api.Controllers
         {
             var intentRequest = skillRequest.Request as IntentRequest;
 
-            var netAtmoAccessToken = skillRequest.Context.System.User.AccessToken;
+            var netAtmoAccessToken = skillRequest?.Context?.System?.User?.AccessToken;
 
             if (String.IsNullOrEmpty(netAtmoAccessToken))
             {
