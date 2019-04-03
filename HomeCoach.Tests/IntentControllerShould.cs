@@ -186,7 +186,7 @@ namespace HomeCoach.Tests
             ((castedResult.Value as SkillResponse).Response.OutputSpeech as PlainTextOutputSpeech)
                 .Text
                 .Should()
-                .Be($"L'appareil {expectedDeviceName} n'a pas été trouvé");
+                .Be($"L'appareil {expectedDeviceName} n'a pas été trouvé.");
         }
     }
 }
