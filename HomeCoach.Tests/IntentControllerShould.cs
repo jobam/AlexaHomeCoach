@@ -186,7 +186,7 @@ namespace HomeCoach.Tests
             ((castedResult.Value as SkillResponse).Response.OutputSpeech as PlainTextOutputSpeech)
                 .Text
                 .Should()
-                .Be($"L'appareil {expectedDeviceName} n'a pas été trouvé.");
+                .Be($"L'appareil {expectedDeviceName} n'a pas été trouvé. ");
         }     
         
         [Fact]
@@ -214,7 +214,7 @@ namespace HomeCoach.Tests
                 }
             };
 
-            var expectedResponseMessage = "L'appareil Device1 n'a pas été trouvé.Les appareils suivants ont été trouvés: Device2;Device3;";
+            var expectedResponseMessage = "L'appareil Device1 n'a pas été trouvé. Les appareils suivants ont été trouvés: Device2;Device3;";
             this.business.Setup(x => x.GetDevicesData(It.IsAny<string>()))
                 .ReturnsAsync(new List<HomeCoachData>());
             this.intentParsingBusiness.Setup(x => x.GetDeviceData(
