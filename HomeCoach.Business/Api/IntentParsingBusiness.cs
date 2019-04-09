@@ -20,7 +20,8 @@ namespace HomeCoach.Business
                     var requestedDeviceData = source.FirstOrDefault(x => x.DeviceName.ToLower() == deviceName);
                     if (requestedDeviceData == null)
                     {
-                        throw new DeviceNotFoundException(deviceName);
+                        var availableDevicesNames = source.Select(x => x.DeviceName).ToList();
+                        throw new DeviceNotFoundException(deviceName, availableDevicesNames);
                     }
 
                     return requestedDeviceData;
