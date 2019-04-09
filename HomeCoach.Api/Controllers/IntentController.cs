@@ -7,6 +7,7 @@ using NodaTime;
 
 namespace HomeCoach.Api.Controllers
 {
+    using System.Text;
     using Alexa.NET;
     using Alexa.NET.Request;
     using Alexa.NET.Request.Type;
@@ -60,7 +61,16 @@ namespace HomeCoach.Api.Controllers
             }
             catch (DeviceNotFoundException ex)
             {
-                return Ok(ResponseBuilder.Tell($"L'appareil {ex.DeviceName} n'a pas été trouvé"));
+                StringBuilder responseMessage = new StringBuilder($"L'appareil {ex.DeviceName} n'a pas été trouvé.");
+                if (ex.FoundDevices != null && ex.FoundDevices.Any())
+                {
+                    responseMessage.Append("Les appareils suivants ont été trouvés: ");
+                    foreach (var exFoundDevice in ex.FoundDevices)
+                    {
+                        responseMessage.Append($"{exFoundDevice};");
+                    }
+                }
+                return Ok(ResponseBuilder.Tell(responseMessage.ToString()));
             }
         }
     }
