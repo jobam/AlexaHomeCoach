@@ -61,7 +61,7 @@ namespace HomeCoach.Api.Controllers
             }
             catch (DeviceNotFoundException ex)
             {
-                StringBuilder responseMessage = new StringBuilder($"L'appareil {ex.DeviceName} n'a pas été trouvé.");
+                StringBuilder responseMessage = new StringBuilder($"L'appareil {ex.DeviceName} n'a pas été trouvé. ");
                 if (ex.FoundDevices != null && ex.FoundDevices.Any())
                 {
                     responseMessage.Append("Les appareils suivants ont été trouvés: ");
