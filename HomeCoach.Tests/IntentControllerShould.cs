@@ -187,6 +187,53 @@ namespace HomeCoach.Tests
                 .Text
                 .Should()
                 .Be($"L'appareil {expectedDeviceName} n'a pas été trouvé.");
+        }     
+        
+        [Fact]
+        public async void Return_SkillResponse_With_DevicesList_Given_NotFoundDevice()
+        {
+            // Arrange
+            var request = new SkillRequest()
+            {
+                Request = new IntentRequest()
+                {
+                    Intent = new Intent()
+                    {
+                        Name = "Intent"
+                    }
+                },
+                Context = new Context()
+                {
+                    System = new AlexaSystem()
+                    {
+                        User = new User()
+                        {
+                            AccessToken = "token"
+                        }
+                    }
+                }
+            };
+
+            var expectedResponseMessage = "L'appareil Device1 n'a pas été trouvé.Les appareils suivants ont été trouvés: Device2;Device3;";
+            this.business.Setup(x => x.GetDevicesData(It.IsAny<string>()))
+                .ReturnsAsync(new List<HomeCoachData>());
+            this.intentParsingBusiness.Setup(x => x.GetDeviceData(
+                    It.IsAny<IEnumerable<HomeCoachData>>(),
+                    It.IsAny<Dictionary<string, Slot>>()))
+                .Throws(new DeviceNotFoundException("Device1", new List<string>(){"Device2","Device3"}));
+
+            // Act
+            var result = await this.controller.GetDevicesData(request);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+            var castedResult = (result as OkObjectResult);
+            
+            castedResult.Value.Should().BeOfType<SkillResponse>();
+            ((castedResult.Value as SkillResponse).Response.OutputSpeech as PlainTextOutputSpeech)
+                .Text
+                .Should()
+                .Be(expectedResponseMessage);
         }
     }
 }

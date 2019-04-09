@@ -64,10 +64,10 @@ namespace HomeCoach.Api.Controllers
                 StringBuilder responseMessage = new StringBuilder($"L'appareil {ex.DeviceName} n'a pas été trouvé.");
                 if (ex.FoundDevices != null && ex.FoundDevices.Any())
                 {
-                    responseMessage.Append("Les appareils suivants ont été trouvés:");
+                    responseMessage.Append("Les appareils suivants ont été trouvés: ");
                     foreach (var exFoundDevice in ex.FoundDevices)
                     {
-                        responseMessage.Append($"{exFoundDevice} ;");
+                        responseMessage.Append($"{exFoundDevice};");
                     }
                 }
                 return Ok(ResponseBuilder.Tell(responseMessage.ToString()));
