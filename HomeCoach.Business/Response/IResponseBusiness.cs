@@ -5,5 +5,6 @@ namespace HomeCoach.Business.Response
     public interface IResponseBusiness
     {
         string BuildResponse(HomeCoachData data, string intent);
+        string BuildResponse(HomeCoachData data, string intent, string locale);
     }
 }

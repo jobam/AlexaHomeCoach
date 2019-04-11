@@ -24,5 +24,10 @@ namespace HomeCoach.Business.Response
                         $"Au niveau de {data.DeviceName}, la température est de {data.Temperature.ToString().Replace(".", ",")}°C, l'humidité est de {data.HumidityPercent}%, la pression est de {data.Pressure}, le niveau de CO2 est de {data.Pressure} particules par mètres cube et le bruit est de {data.Noise} décibels";
             }
         }
+
+        public string BuildResponse(HomeCoachData data, string intent, string locale)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
